@@ -13,9 +13,8 @@ import {
 import type { InjectionKey, Ref } from "vue-demi";
 import type { MaybeElement } from "@vueuse/core";
 import { onClickOutside, unrefElement, useEventListener } from "@vueuse/core";
-import { useContext } from "../hooks";
+import { useContext, useFocusTrap } from "../hooks";
 import { Keys } from "../keyboard";
-import { useFocusTrap } from "../hooks/useFocusTrap";
 import { genId, getOrCreatePortal } from "../utils";
 
 export interface ModalInterface {
