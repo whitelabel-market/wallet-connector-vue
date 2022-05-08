@@ -257,6 +257,7 @@ export const ConnectButton = defineComponent<ConnectButtonProps>({
 
     const hover = ref<boolean>(false);
     const active = ref<boolean>(false);
+    const disabled = computed<boolean>(() => props.disabled as boolean);
 
     useEventListener(window, "keydown", (e: KeyboardEvent) => {
       if (
@@ -321,6 +322,7 @@ export const ConnectButton = defineComponent<ConnectButtonProps>({
         open: modalInterface.open,
         hover,
         active,
+        disabled,
       });
 
       return h(props.as as string, { ...elementProps }, children);
