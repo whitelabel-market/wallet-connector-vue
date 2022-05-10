@@ -12,3 +12,7 @@ export function* genId() {
   let index = 0;
   while (true) yield index++;
 }
+
+export function parseChainId(chainId: string | number) {
+  return typeof chainId === "string" ? Number.parseInt(chainId) : chainId;
+}
