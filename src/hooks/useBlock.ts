@@ -21,6 +21,11 @@ export interface UseBlockReturn {
   error: Ref<Error | undefined>;
 
   /**
+   * Stating if initial request is finished
+   */
+  isFinished: Ref<boolean>;
+
+  /**
    * Manually get new Block
    */
   execute: () => Promise<any>;
@@ -97,6 +102,7 @@ export function useBlock(
   };
 
   const execute = async () => {
+    console.log("execute");
     return new Promise<Block | null>((resolve, reject) => {
       provider.value
         ?.request({
@@ -172,6 +178,7 @@ export function useBlock(
   const blockReturn: UseBlockReturn = {
     block: readonly(block),
     error: readonly(error),
+    isFinished: readonly(isFinished),
     execute,
     onNewBlock: newBlockEvent.on,
     onNewBlockError: newBlockErrorEvent.on,

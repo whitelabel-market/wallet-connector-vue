@@ -1,6 +1,6 @@
 {
   "name": "@whitelabel-solutions/wallet-connector-vue",
-  "version": "0.0.2-development",
+  "version": "0.0.3-development",
   "packageManager": "pnpm@7.0.1",
   "description": "Headless Blockchain Wallet Connector UI components for Vue 2 & 3",
   "keywords": [
