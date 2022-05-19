@@ -14,5 +14,7 @@ export function* genId() {
 }
 
 export function parseChainId(chainId: string | number) {
-  return typeof chainId === "string" ? Number.parseInt(chainId) : chainId;
+  return typeof chainId === "number"
+    ? chainId
+    : Number.parseInt(chainId, chainId.startsWith("0x") ? 16 : 10);
 }

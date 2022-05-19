@@ -1,3 +1,17 @@
+export enum RpcMethods {
+  // EIP-747
+  WATCH_ASSET = "wallet_watchAsset",
+  // EIP-758
+  SUBSCRIBE = "eth_subscribe",
+  UNSUBSCRIBE = "eth_unsubscribe",
+  // EIP-1193
+  REQUEST_ACCOUNTS = "eth_requestAccounts",
+  // EIP-3085
+  ADD_CHAIN = "wallet_addEthereumChain",
+  // EIP-3326
+  SWITCH_CHAIN = "wallet_switchEthereumChain",
+}
+
 // per EIP-1193
 export interface RequestArguments {
   readonly method: string;
@@ -31,6 +45,11 @@ export interface AddEthereumChainParameter {
   rpcUrls?: string[];
 }
 
+// per EIP-3326
+export interface SwitchEthereumChainParameter {
+  chainId: string;
+}
+
 // per EIP-747
 // Interface to add a new token to the wallet
 export interface WatchAssetParameters {
@@ -48,13 +67,13 @@ export interface ProviderMessage {
   readonly data: unknown;
 }
 
-//
 export interface EthereumEvent {
   connect: ProviderConnectInfo;
   disconnect: ProviderRpcError;
   accountsChanged: string[];
-  chainChanged: number;
+  chainChanged: string;
   message: ProviderMessage;
+  block: string;
 }
 
 type EventKeys = keyof EthereumEvent;
@@ -81,3 +100,22 @@ export interface Ethereumish {
     callback: (error: any, response: any) => void
   ) => void;
 }
+
+export type Block = {
+  difficulty: string;
+  extraData: string;
+  gasLimit: string;
+  gasUsed: string;
+  hash: string;
+  logsBloom: string;
+  miner: string;
+  mixHash: string;
+  nonce: string;
+  number: string;
+  parentHash: string;
+  receiptsRoot: string;
+  sha3Uncles: string;
+  stateRoot: string;
+  timestamp: string;
+  transactionsRoot: string;
+};

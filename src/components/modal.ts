@@ -67,6 +67,7 @@ export const ConnectModal = defineComponent<ConnectModalProps>({
     as: { type: [Object, String], default: "div" },
     unmount: { type: Boolean, default: true },
     show: { type: [Boolean, String], default: "missing" },
+    config: { type: Object },
   } as unknown as undefined,
   emits: {
     close: (_close: boolean) => true,

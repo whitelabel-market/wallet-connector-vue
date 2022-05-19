@@ -24,7 +24,11 @@ const esbuildPlugin = esbuild();
 
 const dtsPlugin = [dts()];
 
-const externals = ["vue-demi", "@vueuse/core"];
+const externals = [
+  "vue-demi",
+  "@vueuse/core",
+  "@whitelabel-solutions/wallet-connector",
+];
 
 const esbuildMinifer = (options: ESBuildOptions) => {
   const { renderChunk } = esbuild(options);
@@ -51,6 +55,7 @@ for (const {
   const iifeGlobals = {
     "vue-demi": "VueDemi",
     "@vueuse/core": "VueUseCore",
+    "@whitelabel-solutions/wallet-connector": "WalletConnector",
     ...(globals || {}),
   };
 

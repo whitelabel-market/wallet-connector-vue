@@ -1,49 +1,91 @@
-import { inject, computed, ref, watch, shallowRef, toRaw } from "vue-demi";
-import type { Ref, ShallowRef } from "vue-demi";
+import {
+  inject,
+  computed,
+  ref,
+  watch,
+  shallowRef,
+  toRaw,
+  readonly,
+} from "vue-demi";
+import type { Ref, ShallowRef, WatchOptions } from "vue-demi";
 import { parseChainId } from "../utils";
-import { IProvider } from "@whitelabel-solutions/wallet-connector";
-import type { Provider, RpcError, ConnectInfo } from "../types";
+import { Connector } from "@whitelabel-solutions/wallet-connector";
+import type { IProvider } from "@whitelabel-solutions/wallet-connector";
+import type {
+  Ethereumish,
+  ProviderRpcError,
+  ProviderConnectInfo,
+} from "../types";
+import { createEventHook } from "@vueuse/core";
+import type { EventHookOn } from "@vueuse/core";
 
 export const WALLET_CONTEXT = Symbol();
 
 export interface Wallet {
   // state
   address: Ref<string>;
-  accounts: Ref<string[]>;
   loading: Ref<boolean>;
-  chainId: Ref<number>;
-  balance: Ref<number>;
+  activeChainId: Ref<number | undefined>;
+  err: Ref<ProviderRpcError | undefined>;
   isConnected: Ref<boolean>;
-  error: Ref<RpcError | undefined>;
+  isWrongNetwork: Ref<boolean>;
 
   // shortcuts to useful instances
-  provider: ShallowRef<Provider | undefined>;
+  provider: ShallowRef<Ethereumish | undefined>;
 
   // action methods
   connect: (_provider: IProvider) => Promise<void>;
   disconnect: () => void;
+  onConnected: EventHookOn<Ethereumish>;
+  onDisconnected: EventHookOn;
+  onAccountsChanged: EventHookOn<string>;
+  onChainChanged: EventHookOn<number>;
 }
 
-export function createWallet(): Wallet {
+export interface WalletOptions extends WatchOptions {}
+
+export function createWallet(
+  connectorOptions: any = {
+    appName: "App Name",
+    infuraId: "",
+    chainId: 1,
+    authereum: { key: "" }, // Yet required (but unused) in ConnectorUserOptions type
+    fortmatic: { key: "" }, // Yet required (but unused) in ConnectorUserOptions type
+  },
+  walletOptions: WalletOptions = {}
+): Wallet {
+  const { flush = "pre", immediate = false } = walletOptions;
+
+  // event hooks
+  const connectedEvent = createEventHook<Ethereumish>();
+  const disconnectedEvent = createEventHook();
+  const accountsChangedEvent = createEventHook<string>();
+  const chainChangedEvent = createEventHook<number>();
+
   // state
   const address = ref<string>("");
-  const accounts = ref<string[]>([]);
   const loading = ref<boolean>(false);
-  const chainId = ref<number>(-1);
-  const balance = ref<number>(0);
+  const activeChainId = ref<number>();
+  const err = ref<ProviderRpcError>();
   const isConnected = computed<boolean>(
-    () => (!!provider.value && address.value) as boolean
+    () => !!provider.value && !!address.value
   );
-  const error = ref<RpcError>();
+  const isWrongNetwork = computed<boolean>(() =>
+    !activeChainId.value
+      ? false
+      : activeChainId.value === connectorOptions.chainId
+  );
 
   // useful instances
-  const provider = shallowRef<Provider>();
+  const provider = shallowRef<Ethereumish>();
 
   // methods
   const connect = async (_provider: IProvider): Promise<void> => {
     loading.value = true;
     try {
-      provider.value = toRaw(await _provider.connect()) as Provider;
+      Connector.init(connectorOptions);
+      provider.value = toRaw(await _provider.connect()) as Ethereumish;
+      connectedEvent.trigger(provider.value);
     } catch (e: any) {
       loading.value = false;
       throw new Error(e.message);
@@ -51,36 +93,33 @@ export function createWallet(): Wallet {
   };
 
   const disconnect = async (): Promise<void> => {
-    removeEventListener();
-    provider.value?.disconnect();
+    provider.value?.removeAllListeners();
     [
       address.value,
-      accounts.value,
       loading.value,
-      chainId.value,
-      balance.value,
-      error.value,
+      activeChainId.value,
+      err.value,
       provider.value,
-    ] = ["", [], false, -1, 0, undefined, undefined];
+    ] = ["", false, undefined, undefined, undefined];
+    disconnectedEvent.trigger(undefined);
   };
 
-  const connectListener = ({ chainId: _chainId }: ConnectInfo): void => {
-    if (chainId) chainId.value = parseChainId(_chainId);
+  const connectListener = ({ chainId }: ProviderConnectInfo): void => {
+    activeChainId.value = chainId ? parseChainId(chainId) : -1;
   };
 
-  const disconnectListener = (_error: RpcError): void => {
-    if (_error) error.value = _error;
+  const disconnectListener = (error: ProviderRpcError): void => {
+    err.value = error ? error : undefined;
   };
 
-  const chainChangedListener = (_chainId: string): void => {
-    if (chainId) chainId.value = parseChainId(_chainId);
+  const chainChangedListener = (chainId: string): void => {
+    activeChainId.value = chainId ? parseChainId(chainId) : -1;
+    chainChangedEvent.trigger(activeChainId.value);
   };
 
-  const accountsChangedListener = (_accounts: string[]): void => {
-    if (_accounts.length) {
-      accounts.value = _accounts;
-      address.value = _accounts[0];
-    }
+  const accountsChangedListener = (accounts: string[]): void => {
+    address.value = Array.isArray(accounts) ? accounts?.[0] : "";
+    accountsChangedEvent.trigger(address.value);
   };
 
   const addEventListener = (): void => {
@@ -90,31 +129,34 @@ export function createWallet(): Wallet {
     provider.value?.on("accountsChanged", accountsChangedListener);
   };
 
-  const removeEventListener = (): void => {
-    provider.value?.off("connect", connectListener);
-    provider.value?.off("disconnect", disconnectListener);
-    provider.value?.off("chainChanged", chainChangedListener);
-    provider.value?.off("accountsChanged", accountsChangedListener);
-  };
-
   // reload address and network on connect
-  watch(provider, (): void => {
-    // await connect()?
-    addEventListener();
-    loading.value = false;
-  });
+  watch(
+    provider,
+    (): void => {
+      if (provider.value) {
+        addEventListener();
+        address.value = provider.value.selectedAddress;
+        activeChainId.value = parseChainId(provider.value?.chainId as string);
+      }
+      loading.value = false;
+    },
+    { flush, immediate }
+  );
 
   const wallet: Wallet = {
-    address,
-    accounts,
-    loading,
-    chainId,
-    balance,
-    isConnected,
+    address: readonly(address),
+    loading: readonly(loading),
+    activeChainId: readonly(activeChainId),
+    err: readonly(err),
+    isConnected: readonly(isConnected),
+    isWrongNetwork: readonly(isWrongNetwork),
     provider,
-    error,
     connect,
     disconnect,
+    onConnected: connectedEvent.on,
+    onDisconnected: disconnectedEvent.on,
+    onAccountsChanged: accountsChangedEvent.on,
+    onChainChanged: chainChangedEvent.on,
   };
 
   return wallet;
@@ -124,7 +166,10 @@ export function useWallet(): Wallet {
   const context = inject(WALLET_CONTEXT) as Wallet;
 
   if (!context) {
-    throw new Error("useWallet must be used with useWalletProvider");
+    throw new Error(
+      `[💰]: useWallet was called with no active Wallet. Did you forget to install the Plugin?\n` +
+        `\tapp.use(WalletConnectorVue, options)`
+    );
   }
 
   return context;

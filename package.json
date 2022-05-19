@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^8.4.2",
-    "@whitelabel-solutions/wallet-connector": "^0.0.5",
+    "@whitelabel-solutions/wallet-connector": "^1.0.1",
     "vue-demi": "^0.12.5"
   },
   "devDependencies": {

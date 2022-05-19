@@ -1,7 +1,7 @@
 import type { ConfigurableDocument, MaybeElementRef } from "@vueuse/core";
 import { defaultDocument, unrefElement, useEventListener } from "@vueuse/core";
 import { computed, nextTick } from "vue-demi";
-import { Keys } from "../keyboard";
+import { Keys } from "../../keyboard";
 
 const FOCUSABLE_ELEMENTS_QUERY =
   "button:not([disabled]), " +
