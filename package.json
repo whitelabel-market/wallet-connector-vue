@@ -38,6 +38,9 @@
     "build:rollup": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
     "clean": "rimraf dist types",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs",
     "lint": "eslint .",
     "lint:fix": "nr lint --fix",
     "publish:npm": "esno scripts/publish.ts",
@@ -46,7 +49,7 @@
     "release": "standard-version"
   },
   "dependencies": {
-    "@vueuse/core": "^8.4.2",
+    "@vueuse/core": "^8.5.0",
     "@whitelabel-solutions/wallet-connector": "^1.0.1",
     "vue-demi": "^0.12.5"
   },
