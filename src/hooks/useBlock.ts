@@ -91,7 +91,6 @@ export function useBlock(
       method: RpcMethods.SUBSCRIBE,
       params: ["newHeads"],
     })) as string;
-    console.log(subscriptionId);
   };
 
   const unsubscribe = async () => {
@@ -102,7 +101,6 @@ export function useBlock(
   };
 
   const execute = async () => {
-    console.log("execute");
     return new Promise<Block | null>((resolve, reject) => {
       provider.value
         ?.request({
@@ -110,7 +108,6 @@ export function useBlock(
           params: ["latest", false],
         })
         .then((res: any) => {
-          console.log(res);
           if (typeof res === STR_OBJECT) {
             block.value = {
               difficulty: res.difficulty,
@@ -134,8 +131,8 @@ export function useBlock(
             return resolve(block.value);
           }
         })
-        .catch((e: any) => {
-          error.value = new Error("No result available in new Block.");
+        .catch((e: Error) => {
+          error.value = e;
           newBlockErrorEvent.trigger(error.value);
           return reject(error.value);
         })

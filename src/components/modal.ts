@@ -70,8 +70,7 @@ export const ConnectModal = defineComponent<ConnectModalProps>({
     config: { type: Object },
   } as unknown as undefined,
   emits: {
-    close: (_close: boolean) => true,
-    open: (_open: boolean) => true,
+    close: (_close: boolean) => _close,
   },
   setup(props, { emit, attrs, slots }) {
     const id = `connect-modal-${genId().next().value}`;
@@ -108,7 +107,7 @@ export const ConnectModal = defineComponent<ConnectModalProps>({
         title.value = id;
       },
       close() {
-        emit("close", false);
+        emit("close", true);
       },
     };
 
@@ -248,7 +247,7 @@ export const ConnectButton = defineComponent<ConnectButtonProps>({
     as: { type: [Object, String], default: "button" },
     disabled: { type: Boolean, default: false },
   } as unknown as undefined,
-  emits: { click: (_click: boolean) => true },
+  emits: { click: (_click: boolean) => _click },
   setup(props, { emit, slots }) {
     const name = "ConnectButton";
     const modalInterface = useContext(ConnectContext, name) as ModalInterface;

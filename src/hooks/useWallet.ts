@@ -42,6 +42,7 @@ export interface Wallet {
   onChainChanged: EventHookOn<number>;
 }
 
+// tslint:disable-next-line:no-empty-interface
 export interface WalletOptions extends WatchOptions {}
 
 export function createWallet(
