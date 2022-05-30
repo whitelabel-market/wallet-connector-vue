@@ -13,8 +13,11 @@ export function* genId() {
   while (true) yield index++;
 }
 
-export function parseChainId(chainId: string | number) {
-  return typeof chainId === "number"
-    ? chainId
-    : Number.parseInt(chainId, chainId.startsWith("0x") ? 16 : 10);
+export function parseChainId(chainId: string | number): number {
+  if (chainId) {
+    return typeof chainId === "number"
+      ? chainId
+      : Number.parseInt(chainId, chainId.startsWith("0x") ? 16 : 10);
+  }
+  return 0;
 }

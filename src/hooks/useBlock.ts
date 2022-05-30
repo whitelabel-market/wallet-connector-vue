@@ -147,7 +147,6 @@ export function useBlock(
     provider.value?.on("message", (message: ProviderMessage) => {
       if (message.type === "eth_subscription") {
         const { data } = message as any;
-        console.log(data.subscription);
         if (data.subscription === subscriptionId) {
           if (typeof data?.result === STR_OBJECT) {
             block.value = data.result;
