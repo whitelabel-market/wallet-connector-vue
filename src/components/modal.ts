@@ -146,7 +146,6 @@ export const ConnectModal = defineComponent<ConnectModalProps>({
       };
 
       const children = slots.default?.({ open: open.value });
-
       return !open.value
         ? null
         : h(
@@ -295,7 +294,6 @@ export const ConnectButton = defineComponent<ConnectButtonProps>({
       e.preventDefault();
       e.stopPropagation();
       emit("click", true);
-      modalInterface.close();
     };
 
     return () => {

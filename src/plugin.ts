@@ -5,10 +5,10 @@ import {
   ConnectButton,
 } from "./components/modal";
 import { WALLET_CONTEXT, createWallet } from "./hooks";
-//import type { ConnectorOptions } from "@whitelabel-solutions/wallet-connector/dist";
+import type { ConnectorOptions } from "@whitelabel-solutions/wallet-connector";
 import type { App, Plugin } from "vue-demi";
 
-export function WalletConnectorVue(options: any): Plugin {
+export function WalletConnectorVue(options: ConnectorOptions): Plugin {
   return {
     install(app: App) {
       app.component("ConnectModal", ConnectModal);

@@ -4,7 +4,6 @@ import { execSync as exec } from "child_process";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import consola from "consola";
-import { version } from "../package.json";
 
 const rootDir = path.resolve(__dirname, "..");
 const watch = process.argv.includes("--watch");
@@ -41,12 +40,28 @@ async function buildMetaFiles() {
     );
 
   const packageJSON = await fs.readJSON(path.join(packageRoot, "package.json"));
-  for (const key of Object.keys(packageJSON.dependencies || {})) {
-    if (key.startsWith("@vueuse/")) packageJSON.dependencies[key] = version;
+
+  if (packageJSON) {
+    delete packageJSON.devDependencies;
+    delete packageJSON.publishConfig;
+    delete packageJSON["simple-git-hooks"];
+    delete packageJSON.config;
+    delete packageJSON.pnpm;
   }
+
   await fs.writeJSON(path.join(packageDist, "package.json"), packageJSON, {
     spaces: 2,
   });
+
+  replaceInFile(path.join(packageDist, "package.json"), "./dist/", "./");
+}
+
+function replaceInFile(file: string, search: string, replace: string): void {
+  const fileContent = fs
+    .readFileSync(file, "utf8")
+    .replace(new RegExp(search, "g"), replace);
+
+  fs.writeFileSync(file, fileContent, "utf8");
 }
 
 async function build() {
@@ -54,7 +69,7 @@ async function build() {
   exec("pnpm run clean", { stdio: "inherit" });
 
   consola.info("Rollup");
-  exec(`pnpm run build:rollup${watch ? " -- --watch" : ""}`, {
+  exec(`pnpm run build:rollup${watch ? " --watch" : ""}`, {
     stdio: "inherit",
   });
 
