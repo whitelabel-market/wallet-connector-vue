@@ -19,16 +19,16 @@
     "type": "git",
     "url": "https://github.com/whitelabel-market/wallet-connector-vue.git"
   },
-  "main": "./index.cjs",
-  "module": "./index.mjs",
-  "types": "./index.d.ts",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/index.iife.min.js",
+  "jsdelivr": "./dist/index.iife.min.js",
   "exports": {
     ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs",
-      "types": "./index.d.ts"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
     },
     "./*": "./*"
   },
@@ -37,16 +37,17 @@
     "build": "esno scripts/build.ts",
     "build:rollup": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
+    "build:watch": "nr build --watch",
     "clean": "rimraf dist types",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
+    "playground": "esno scripts/build.ts --watch",
     "lint": "eslint .",
     "lint:fix": "nr lint --fix",
     "publish:npm": "esno scripts/publish.ts",
     "semantic-release": "semantic-release",
-    "typecheck": "tsc --noEmit",
-    "release": "standard-version"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@vueuse/core": "^8.5.0",
@@ -93,7 +94,6 @@
     "vue2": "npm:vue@^2.6.14"
   },
   "peerDependencies": {
-    "@babel/core": "^7.17.10",
     "@vue/composition-api": "^1.1.0",
     "vue": "^2.6.0 || ^3.2.0"
   },
