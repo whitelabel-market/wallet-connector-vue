@@ -91,6 +91,21 @@ export function useBlock(
       method: RpcMethods.SUBSCRIBE,
       params: ["newHeads"],
     })) as string;
+
+    provider.value?.on("message", (message: ProviderMessage) => {
+      if (message.type === "eth_subscription") {
+        const { data } = message as any;
+        if (data.subscription === subscriptionId) {
+          if (typeof data?.result === STR_OBJECT) {
+            block.value = data.result;
+            newBlockEvent.trigger(block.value as Block);
+          } else {
+            error.value = new Error("No result available in new Block.");
+            newBlockErrorEvent.trigger(error.value);
+          }
+        }
+      }
+    });
   };
 
   const unsubscribe = async () => {
@@ -142,25 +157,8 @@ export function useBlock(
     });
   };
 
-  watch(provider, () => {
-    if (!options.useSubscriptions) return;
-    provider.value?.on("message", (message: ProviderMessage) => {
-      if (message.type === "eth_subscription") {
-        const { data } = message as any;
-        if (data.subscription === subscriptionId) {
-          if (typeof data?.result === STR_OBJECT) {
-            block.value = data.result;
-            newBlockEvent.trigger(block.value as Block);
-          } else {
-            error.value = new Error("No result available in new Block.");
-            newBlockErrorEvent.trigger(error.value);
-          }
-        }
-      }
-    });
-  });
-
-  watch([activeChainId, windowActive], async () => {
+  watch([activeChainId, windowActive, provider], async () => {
+    if (activeChainId.value && provider.value) execute();
     if (!options.useSubscriptions) return;
     if (windowActive.value && activeChainId.value) subscribe();
     else unsubscribe();
