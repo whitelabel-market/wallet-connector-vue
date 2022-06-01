@@ -52,6 +52,16 @@ async function buildMetaFiles() {
   await fs.writeJSON(path.join(packageDist, "package.json"), packageJSON, {
     spaces: 2,
   });
+
+  replaceInFile(path.join(packageDist, "package.json"), "./dist/", "./");
+}
+
+function replaceInFile(file: string, search: string, replace: string): void {
+  const fileContent = fs
+    .readFileSync(file, "utf8")
+    .replace(new RegExp(search, "g"), replace);
+
+  fs.writeFileSync(file, fileContent, "utf8");
 }
 
 async function build() {
