@@ -11,7 +11,7 @@
     "@whitelabel-solutions/wallet-connector-vue": "link:../../",
     "core-js": "^3.8.3",
     "prismjs": "^1.28.0",
-    "vue": "^3.2.29",
+    "vue": "^3.2.31",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
