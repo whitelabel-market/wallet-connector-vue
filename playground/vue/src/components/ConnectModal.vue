@@ -1,10 +1,10 @@
 <template>
   <ConnectModal :show="show" class="fixed inset-0">
     <div class="fixed inset-0 overflow-y-auto">
-      <div class="flex min-h-full items-center justify-center p-4 text-center">
+      <div class="flex items-center justify-center min-h-full p-4 text-center">
         <div class="fixed inset-0 bg-black/50"></div>
         <ConnectContent
-          class="w-full flex flex-col gap-8 max-w-md transform rounded-2xl bg-white p-6 text-left shadow-xl"
+          class="flex flex-col w-full max-w-md gap-8 p-6 text-left transform bg-white shadow-xl rounded-2xl"
         >
           <ConnectTitle class="text-xl font-bold text-center"
             >Select Wallet</ConnectTitle
