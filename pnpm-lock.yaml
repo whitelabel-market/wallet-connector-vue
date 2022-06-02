@@ -20,7 +20,7 @@ specifiers:
   '@types/node': ^17.0.29
   '@vue/eslint-config-typescript': ^10.0.0
   '@vueuse/core': ^8.5.0
-  '@whitelabel-solutions/wallet-connector': ^1.0.4
+  '@whitelabel-solutions/wallet-connector': ^1.0.5
   commitizen: ^4.2.4
   consola: ^2.15.3
   cross-env: ^7.0.3
@@ -50,7 +50,7 @@ specifiers:
 
 dependencies:
   '@vueuse/core': 8.6.0_vue@3.2.36
-  '@whitelabel-solutions/wallet-connector': 1.0.4_@babel+core@7.18.2
+  '@whitelabel-solutions/wallet-connector': 1.0.5_@babel+core@7.18.2
   vue-demi: 0.12.5_vue@3.2.36
 
 devDependencies:
@@ -1476,8 +1476,8 @@ packages:
       '@walletconnect/window-getters': 1.0.0
     dev: false
 
-  /@whitelabel-solutions/wallet-connector/1.0.4_@babel+core@7.18.2:
-    resolution: {integrity: sha512-QbcrkthRgv4X2v1x+OVEwc6zfR/BIS8ZwQL1CsO0qGuc407p9fEzMvRc03vzlH3yCBQaZNMiiEdFWRGht7RYyA==}
+  /@whitelabel-solutions/wallet-connector/1.0.5_@babel+core@7.18.2:
+    resolution: {integrity: sha512-EOSZ5imsUZoLYVrPq39JUeJ6PVyIsBfbCKusswqJG3STeFRRgA8Dl50BYG2jjHK1weYL15fDZYLOc3bUratUow==}
     dependencies:
       '@coinbase/wallet-sdk': 3.2.0_@babel+core@7.18.2
       '@walletconnect/web3-provider': 1.7.8_@babel+core@7.18.2
@@ -2583,7 +2583,7 @@ packages:
     dependencies:
       bn.js: 4.12.0
       brorand: 1.1.0
-      hash.js: 1.1.3
+      hash.js: 1.1.7
       hmac-drbg: 1.0.1
       inherits: 2.0.4
       minimalistic-assert: 1.0.1
@@ -3907,7 +3907,7 @@ packages:
   /hmac-drbg/1.0.1:
     resolution: {integrity: sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg==}
     dependencies:
-      hash.js: 1.1.3
+      hash.js: 1.1.7
       minimalistic-assert: 1.0.1
       minimalistic-crypto-utils: 1.0.1
     dev: false
@@ -5277,7 +5277,7 @@ packages:
     dev: false
 
   /precond/0.2.3:
-    resolution: {integrity: sha1-qpWRvKokkj8eD0hJ0kD0fvwQdaw=}
+    resolution: {integrity: sha512-QCYG84SgGyGzqJ/vlMsxeXd/pgL/I94ixdNFyh1PusWmTCyVfPJjZ1K1jvHtsbfnXQs2TSkEP2fR7QiMZAnKFQ==}
     engines: {node: '>= 0.6'}
     dev: false
 
@@ -5303,12 +5303,12 @@ packages:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
   /process/0.11.10:
-    resolution: {integrity: sha1-czIwDoQBYb2j5podHZGn1LwW8YI=}
+    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
     dev: false
 
   /promise-to-callback/1.0.0:
-    resolution: {integrity: sha1-XSp0kBC/tn2WNZj805YHRqaP7vc=}
+    resolution: {integrity: sha512-uhMIZmKM5ZteDMfLgJnoSq9GCwsNKrYau73Awf1jIy6/eUcuuZ3P+CD9zUv0kJsIUbU+x6uLNIhXhLHDs1pNPA==}
     engines: {node: '>=0.10.0'}
     dependencies:
       is-fn: 1.0.0
@@ -5316,7 +5316,7 @@ packages:
     dev: false
 
   /prr/1.0.1:
-    resolution: {integrity: sha1-0/wRS6BplaRexok/SEzrHXj19HY=}
+    resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
     dev: false
 
   /psl/1.8.0:
@@ -5387,7 +5387,7 @@ packages:
     dev: true
 
   /quick-lru/1.1.0:
-    resolution: {integrity: sha1-Q2CxfGETatOAeDl/8RQW4Ybc+7g=}
+    resolution: {integrity: sha512-tRS7sTgyxMXtLum8L65daJnHUhfDUgboRdcWW2bR9vBfrj2+O5HSMbQOJfJJjIVSPFqbBCF37FpwWXGitDc5tA==}
     engines: {node: '>=4'}
     dev: false
 
