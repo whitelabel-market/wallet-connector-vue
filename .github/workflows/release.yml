@@ -24,10 +24,10 @@ jobs:
 
       - run: pnpm install
 
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn semantic-release
+      # - name: Release
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      #   run: yarn semantic-release
 
       - run: pnpm run publish:npm
         env:
