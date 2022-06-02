@@ -9,7 +9,7 @@ import {
 } from "vue-demi";
 import type { Ref, ShallowRef, WatchOptions } from "vue-demi";
 import { parseChainId } from "../utils";
-import { Connector } from "@whitelabel-solutions/wallet-connector";
+import { Connector, Providers } from "@whitelabel-solutions/wallet-connector";
 import type { IProvider } from "@whitelabel-solutions/wallet-connector";
 import type {
   Ethereumish,
@@ -26,9 +26,9 @@ export interface Wallet {
   address: Ref<string>;
   loading: Ref<boolean>;
   activeChainId: Ref<number | undefined>;
-  err: Ref<ProviderRpcError | undefined>;
+  error: Ref<ProviderRpcError | undefined>;
   isConnected: Ref<boolean>;
-  isWrongNetwork: Ref<boolean>;
+  shortAddress: Ref<string>;
 
   // shortcuts to useful instances
   provider: ShallowRef<Ethereumish | undefined>;
@@ -67,14 +67,12 @@ export function createWallet(
   const address = ref<string>("");
   const loading = ref<boolean>(false);
   const activeChainId = ref<number>();
-  const err = ref<ProviderRpcError>();
+  const error = ref<ProviderRpcError>();
   const isConnected = computed<boolean>(
     () => !!provider.value && !!address.value
   );
-  const isWrongNetwork = computed<boolean>(() =>
-    !activeChainId.value
-      ? false
-      : activeChainId.value === connectorOptions.chainId
+  const shortAddress = computed<string>(
+    () => address.value?.slice(0, 4) + "..." + address.value?.slice(-4)
   );
 
   // useful instances
@@ -99,9 +97,10 @@ export function createWallet(
       address.value,
       loading.value,
       activeChainId.value,
-      err.value,
+      error.value,
       provider.value,
     ] = ["", false, undefined, undefined, undefined];
+    localStorage.removeItem("CACHED_PROVIDER");
     disconnectedEvent.trigger(undefined);
   };
 
@@ -109,8 +108,8 @@ export function createWallet(
     activeChainId.value = chainId ? parseChainId(chainId) : -1;
   };
 
-  const disconnectListener = (error: ProviderRpcError): void => {
-    err.value = error ? error : undefined;
+  const disconnectListener = (err: ProviderRpcError): void => {
+    error.value = err ? err : undefined;
   };
 
   const chainChangedListener = (chainId: string): void => {
@@ -135,6 +134,7 @@ export function createWallet(
     provider,
     (): void => {
       if (provider.value) {
+        error.value = undefined;
         addEventListener();
         address.value = provider.value.selectedAddress;
         activeChainId.value = parseChainId(provider.value?.chainId as string);
@@ -144,13 +144,22 @@ export function createWallet(
     { flush, immediate }
   );
 
+  if (window) {
+    const id = JSON.parse(localStorage.getItem("CACHED_PROVIDER") as string);
+    const providers: any = Providers;
+    const p: any = Object.keys(providers)
+      .map((key: any) => providers[key as any] as any)
+      .find((provider) => provider.id === id);
+    if (p) connect(p);
+  }
+
   const wallet: Wallet = {
     address: readonly(address),
     loading: readonly(loading),
     activeChainId: readonly(activeChainId),
-    err: readonly(err),
+    error: readonly(error),
     isConnected: readonly(isConnected),
-    isWrongNetwork: readonly(isWrongNetwork),
+    shortAddress: readonly(shortAddress),
     provider,
     connect,
     disconnect,

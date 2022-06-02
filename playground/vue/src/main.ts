@@ -7,7 +7,7 @@ import "@/assets/css/app.css";
 const app = createApp({
   render: () => h(App),
 });
-app.use(router);
+
 app.use(
   WalletConnectorVue({
     appName: "Magic Mondrian",
@@ -15,4 +15,5 @@ app.use(
     chainId: 80001,
   })
 );
+app.use(router);
 app.mount("#app");
