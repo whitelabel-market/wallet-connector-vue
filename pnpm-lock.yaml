@@ -20,7 +20,7 @@ specifiers:
   '@types/node': ^17.0.29
   '@vue/eslint-config-typescript': ^10.0.0
   '@vueuse/core': ^8.5.0
-  '@whitelabel-solutions/wallet-connector': ^1.0.4
+  '@whitelabel-solutions/wallet-connector': ^1.0.5
   commitizen: ^4.2.4
   consola: ^2.15.3
   cross-env: ^7.0.3
