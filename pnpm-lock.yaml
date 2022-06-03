@@ -20,7 +20,7 @@ specifiers:
   '@types/node': ^17.0.29
   '@vue/eslint-config-typescript': ^10.0.0
   '@vueuse/core': ^8.5.0
-  '@whitelabel-solutions/wallet-connector': ^1.0.5
+  '@whitelabel-solutions/wallet-connector': ^1.0.6
   commitizen: ^4.2.4
   consola: ^2.15.3
   cross-env: ^7.0.3
@@ -50,7 +50,7 @@ specifiers:
 
 dependencies:
   '@vueuse/core': 8.6.0_vue@3.2.36
-  '@whitelabel-solutions/wallet-connector': 1.0.5_@babel+core@7.18.2
+  '@whitelabel-solutions/wallet-connector': 1.0.6_@babel+core@7.18.2
   vue-demi: 0.12.5_vue@3.2.36
 
 devDependencies:
@@ -1476,8 +1476,8 @@ packages:
       '@walletconnect/window-getters': 1.0.0
     dev: false
 
-  /@whitelabel-solutions/wallet-connector/1.0.5_@babel+core@7.18.2:
-    resolution: {integrity: sha512-EOSZ5imsUZoLYVrPq39JUeJ6PVyIsBfbCKusswqJG3STeFRRgA8Dl50BYG2jjHK1weYL15fDZYLOc3bUratUow==}
+  /@whitelabel-solutions/wallet-connector/1.0.6_@babel+core@7.18.2:
+    resolution: {integrity: sha512-KY89rKzt7E3Qlu/oh2LIta6rmsUhgpQ6XlvBzo63KSWL543nAFJLKL5Qlr1hDXJxkcM1p722l27H6wkk7xvh1A==}
     dependencies:
       '@coinbase/wallet-sdk': 3.2.0_@babel+core@7.18.2
       '@walletconnect/web3-provider': 1.7.8_@babel+core@7.18.2
@@ -2583,7 +2583,7 @@ packages:
     dependencies:
       bn.js: 4.12.0
       brorand: 1.1.0
-      hash.js: 1.1.3
+      hash.js: 1.1.7
       hmac-drbg: 1.0.1
       inherits: 2.0.4
       minimalistic-assert: 1.0.1
@@ -3907,7 +3907,7 @@ packages:
   /hmac-drbg/1.0.1:
     resolution: {integrity: sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg==}
     dependencies:
-      hash.js: 1.1.3
+      hash.js: 1.1.7
       minimalistic-assert: 1.0.1
       minimalistic-crypto-utils: 1.0.1
     dev: false
